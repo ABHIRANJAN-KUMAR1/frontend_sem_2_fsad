@@ -1,3 +1,4 @@
+const [adminCode, setAdminCode] = useState("");
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
@@ -27,6 +28,11 @@ export default function Register() {
       return;
     }
 
+    if (role === "admin" && adminCode !== "admin123") {
+  toast.error("Invalid admin code");
+  return;
+}
+    
     if (password !== confirmPassword) {
       toast.error("Passwords do not match");
       return;
@@ -107,7 +113,21 @@ export default function Register() {
                 ))}
               </div>
             </div>
-
+            
+              {role === "admin" && (
+  <div>
+    <label className="text-sm font-medium mb-2 block">
+      Admin Secret Code
+    </label>
+    <Input
+      type="password"
+      placeholder="Enter admin code"
+      value={adminCode}
+      onChange={(e) => setAdminCode(e.target.value)}
+      className="h-10"
+    />
+  </div>
+)}
             {/* Full Name Input */}
             <div>
               <label className="text-sm font-medium text-foreground mb-2 block">
