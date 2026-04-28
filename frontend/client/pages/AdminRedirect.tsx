@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { usersApi } from "@/lib/api";
 import React, { useState } from "react";
 import { Layout } from "@/components/Layout";
 import { useActivities } from "@/context/ActivityContext";
@@ -36,8 +38,24 @@ export default function AdminRedirect() {
   const [targetActivityId, setTargetActivityId] = useState<string>("");
   const [sourceActivityId, setSourceActivityId] = useState<string>("");
 
-  const allStudentsRaw = getJson<LocalUserPreview[]>("users", []);
-  const allStudents: { id: string; name: string; email: string }[] = allStudentsRaw.filter((user) => user.role === "student");
+  //const allStudentsRaw = getJson<LocalUserPreview[]>("users", []);
+  const [allStudents, setAllStudents] = useState<any[]>([]);
+
+useEffect(() => {
+  const fetchStudents = async () => {
+    try {
+      const data = await usersApi.getStudents();
+      setAllStudents(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  fetchStudents();
+}, []);
+
+  
+  //const allStudents: { id: string; name: string; email: string }[] = allStudentsRaw.filter((user) => user.role === "student");
 
   const activitiesWithRegistrations = activities.filter(
     (activity) => participantsOf(activity).length > 0,
