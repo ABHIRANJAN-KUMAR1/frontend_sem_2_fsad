@@ -46,19 +46,17 @@ export default function AdminRegister() {
     setIsLoading(true);
 
     try {
-      // ✅ FIX 1: role lowercase
-      const result = await register(email, name, password, "admin");
-      
-      toast.success(result.message || `Welcome Admin, ${name}! Please verify your email.`);
-      
-      // ✅ FIX 2: correct navigation
-      navigate(`/email-verify?email=${encodeURIComponent(email.toLowerCase().trim())}`);
+  const result = await register(email, name, password, "ADMIN");
 
-    } catch (error: any) {
-      toast.error(error.message || "Registration failed. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
+  toast.success(result.message || `Welcome Admin, ${name}! Please verify your email.`);
+
+  navigate(`/email-verify?email=${encodeURIComponent(email.toLowerCase().trim())}`);
+
+} catch (error: any) {
+  toast.error(error.message || "Registration failed. Please try again.");
+} finally {
+  setIsLoading(false);
+}
   };
 
   return (
