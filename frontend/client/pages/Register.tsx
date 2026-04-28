@@ -28,7 +28,7 @@ export default function Register() {
       return;
     }
 
-    if (role === "admin" && adminCode !== "admin123") {
+    if (role === "admin" && adminCode !== "ADMIN2024") {
   toast.error("Invalid admin code");
   return;
 }
