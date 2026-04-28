@@ -13,7 +13,7 @@ export default function Login() {
 
 const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loginRole, setLoginRole] = useState<"student" | "admin">("student");
+ // const [loginRole, setLoginRole] = useState<"student" | "admin">("student");
   const [isLoading, setIsLoading] = useState(false);
 
   const rawFromPath = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname;
@@ -21,9 +21,12 @@ const [email, setEmail] = useState("");
     ? rawFromPath
     : "/dashboard";
 
-  if (!loading && isAuthenticated && user) {
-    return <Navigate to="/dashboard" replace />;
+if (!loading && isAuthenticated && user) {
+  if (user.role === "admin") {
+    return <Navigate to="/admin-dashboard" replace />;
   }
+  return <Navigate to="/dashboard" replace />;
+}
 
 
   // Captcha
@@ -64,24 +67,20 @@ const [email, setEmail] = useState("");
 
     setIsLoading(true);
 
-    try {
+   try {
+  const user = await login(email, password);
 
-      const user = await login(email, password);
+  console.log("LOGIN USER:", user);
 
+  toast.success(`Welcome back, ${user.name}!`);
 
+  
 
-      // Removed blocking role check - login works for any registered user
-
-      toast.success(`Welcome back, ${user.name}!`);
-
-      // ✅ FIXED navigation (single source)
-      navigate(fromPath, { replace: true });
-
-    } catch (error) {
-      toast.error("Invalid email or password. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
+} catch (error) {
+  toast.error("Invalid email or password. Please try again.");
+} finally {
+  setIsLoading(false);
+}
   };
 
   return (
@@ -114,28 +113,7 @@ const [email, setEmail] = useState("");
           <form onSubmit={handleLogin} className="space-y-4">
 
 
-            {/* Role Selection */}
-            <div className="mb-6">
-              <label className="text-sm font-medium text-foreground mb-3 block text-center">
-                Login As
-              </label>
-              <div className="grid grid-cols-2 gap-3">
-                {(["student", "admin"] as const).map((userRole) => (
-                  <button
-                    key={userRole}
-                    type="button"
-                    onClick={() => setLoginRole(userRole)}
-                    className={`px-4 py-3 rounded-lg border-2 font-semibold capitalize transition-all ${
-                      loginRole === userRole
-                        ? "border-blue-500 bg-blue-50 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400 shadow-md"
-                        : "border-border bg-background text-foreground hover:border-border/80 hover:shadow-sm"
-                    }`}
-                  >
-                    {userRole.charAt(0).toUpperCase() + userRole.slice(1)} Login
-                  </button>
-                ))}
-              </div>
-            </div>
+    
 
             {/* Email */}
             <div>
