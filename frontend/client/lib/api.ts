@@ -1,6 +1,10 @@
 import { safeGetItem, safeRemoveItem } from "@/lib/safeStorage";
 
-const rawApiUrl = (import.meta.env.VITE_API_URL || "/api").trim();
+const rawApiUrl = import.meta.env.VITE_API_URL?.trim();
+
+if (!rawApiUrl) {
+  throw new Error(" VITE_API_URL is not defined. Check Vercel Environment Variables.");
+}
 
 const normalizeApiBase = (input: string) => {
   // If user sets domain only (https://api.example.com), append /api automatically.
