@@ -50,21 +50,22 @@ export default function Register() {
     setIsLoading(true);
 
     try {
-      // Call backend API for registration
-      const result = await register(email, name, password, role);
-      
-      // Notify admin about new registration
-      notifyAdminOfRegistration(name, "");
-      
-      toast.success(result.message || "Registration successful. Please verify your email.");
-      
-      // Redirect to OTP verification
-      navigate(`/email-verify?email=${encodeURIComponent(email.toLowerCase().trim())}`);
-    } catch (error: any) {
-      toast.error(error.message || "Registration failed. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
+  const backendRole = role === "admin" ? "ADMIN" : "USER";
+
+  console.log("SENDING ROLE:", backendRole);
+
+  const result = await register(email, name, password, backendRole);
+
+  notifyAdminOfRegistration(name, "");
+
+  toast.success(result.message || "Registration successful. Please verify your email.");
+
+  navigate(`/email-verify?email=${encodeURIComponent(email.toLowerCase().trim())}`);
+} catch (error: any) {
+  toast.error(error.message || "Registration failed. Please try again.");
+} finally {
+  setIsLoading(false);
+}
   };
 
   return (
