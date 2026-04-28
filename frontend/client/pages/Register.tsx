@@ -94,12 +94,8 @@ export default function Register() {
                     key={userRole}
                     type="button"
                     onClick={() => {
-                      if (userRole === "admin") {
-                        navigate("/admin-register");
-                      } else {
-                        setRole(userRole);
-                      }
-                    }}
+                      setRole(userRole); 
+                      }}
                     className={`px-4 py-2 rounded-lg border-2 font-medium capitalize transition-all ${
                       role === userRole
                         ? "border-blue-500 bg-blue-50 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400"
