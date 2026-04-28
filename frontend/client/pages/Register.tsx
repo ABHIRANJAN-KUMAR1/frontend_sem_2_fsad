@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { UserRole } from "@/types";
 import { Activity } from "lucide-react";
 import { toast } from "sonner";
-
+//
 export default function Register() {
   const navigate = useNavigate();
   const { register } = useAuth();
