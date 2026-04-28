@@ -24,6 +24,8 @@ export default function Register() {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    console.log("ROLE VALUE:", role);
+    
     if (!name || !email || !password || !confirmPassword) {
       toast.error("Please fill in all fields");
       return;
